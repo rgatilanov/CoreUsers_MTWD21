@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "yv5RFybwN6J82cE0VS4HmY6iOIEWG4jA3lEE+ed7dVTbLM1+rTS9u9jJPdsW4m9VXIPrYNxmG9pnJlFkZC827A==",
+  "dgSpecHash": "NXeXr/HLV9Rer0JJu5v1Dpgrqn7cTIq4x5WAOnx9cV/0xNj1YCB7CAi3AdEhadpLKRne1ueEV9XmpPITWVp6eA==",
   "success": true,
-  "projectFilePath": "G:\\EjerciciosMTWDM2020\\Users_CORE\\Users_CORE\\Users_CORE.csproj",
+  "projectFilePath": "G:\\Users_COREGit\\Users_CORE\\Users_CORE.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\ProBook 450 HP\\.nuget\\packages\\bouncycastle.netcore\\1.8.5\\bouncycastle.netcore.1.8.5.nupkg.sha512",
     "C:\\Users\\ProBook 450 HP\\.nuget\\packages\\core.connection\\1.0.1\\core.connection.1.0.1.nupkg.sha512",
