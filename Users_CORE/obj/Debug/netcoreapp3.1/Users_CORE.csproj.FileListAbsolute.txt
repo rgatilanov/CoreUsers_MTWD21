@@ -1,0 +1,10 @@
+G:\EjerciciosMTWDM2020\Users_CORE\Users_CORE\bin\Debug\netcoreapp3.1\Users_CORE.deps.json
+G:\EjerciciosMTWDM2020\Users_CORE\Users_CORE\bin\Debug\netcoreapp3.1\Users_CORE.dll
+G:\EjerciciosMTWDM2020\Users_CORE\Users_CORE\bin\Debug\netcoreapp3.1\Users_CORE.pdb
+G:\EjerciciosMTWDM2020\Users_CORE\Users_CORE\obj\Debug\netcoreapp3.1\Users_CORE.csproj.AssemblyReference.cache
+G:\EjerciciosMTWDM2020\Users_CORE\Users_CORE\obj\Debug\netcoreapp3.1\Users_CORE.GeneratedMSBuildEditorConfig.editorconfig
+G:\EjerciciosMTWDM2020\Users_CORE\Users_CORE\obj\Debug\netcoreapp3.1\Users_CORE.AssemblyInfoInputs.cache
+G:\EjerciciosMTWDM2020\Users_CORE\Users_CORE\obj\Debug\netcoreapp3.1\Users_CORE.AssemblyInfo.cs
+G:\EjerciciosMTWDM2020\Users_CORE\Users_CORE\obj\Debug\netcoreapp3.1\Users_CORE.csproj.CoreCompileInputs.cache
+G:\EjerciciosMTWDM2020\Users_CORE\Users_CORE\obj\Debug\netcoreapp3.1\Users_CORE.dll
+G:\EjerciciosMTWDM2020\Users_CORE\Users_CORE\obj\Debug\netcoreapp3.1\Users_CORE.pdb
