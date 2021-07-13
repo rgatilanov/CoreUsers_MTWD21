@@ -1,4 +1,5 @@
 ﻿using CORE.Connection.Interfaces;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -21,7 +22,45 @@ namespace Users_CORE.Services
 
         public List<Models.UserModel> GetUsers()
         {
-            throw new Exception();
+            try
+            {
+                List<UserModel> list = new List<UserModel>();
+
+                _conn.PrepararProcedimiento("dbo.[USERS.Get_All]", _parameters);
+
+                DataTableReader DTRResultados = _conn.EjecutarTableReader();
+                while (DTRResultados.Read())
+                {
+                    var Json = DTRResultados["Usuario"].ToString();
+                    if (Json != string.Empty)
+                    {
+                        JArray arr = JArray.Parse(Json);
+                        foreach (JObject jsonOperaciones in arr.Children<JObject>())
+                        {
+                            //user = JsonConvert.DeserializeObject<User>(jsonOperaciones);
+                            list.Add(new UserModel()
+                            {
+                                Identificador = Convert.ToInt32(jsonOperaciones["Id"].ToString()),
+                                Name = jsonOperaciones["Name"].ToString(),
+                                LastName = jsonOperaciones["LastName"].ToString(),
+                                Nick = jsonOperaciones["Nick"].ToString(),
+                                CreateDate = DateTime.Parse(jsonOperaciones["CreateDate"].ToString())
+                            });
+
+                        }
+                    }
+                }
+
+                return list;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            finally
+            {
+                _parameters.Clear();
+            }
         }
         public Models.UserModel GetUser(int ID)
         {
@@ -30,7 +69,6 @@ namespace Users_CORE.Services
                 UserModel UsuarioResp = null;
 
                 _parameters.Add(new Tuple<string, object, int>("@Id", ID, 0));
-
                 _conn.PrepararProcedimiento("dbo.[USERS.Get_Id]", _parameters);
 
                 DataTableReader DTRResultados = _conn.EjecutarTableReader();

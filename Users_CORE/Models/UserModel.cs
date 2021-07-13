@@ -9,6 +9,6 @@ namespace Users_CORE.Models
         public string Name { get; set; }
         public string LastName { get; set; }
         public DateTime CreateDate { get; set; }
-        public Boolean Statu { get; set; }
+        public Boolean Status { get; set; }
     }
 }

@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "/CAKLV+KXJbmwoMq2q5Tkgf3atEOioDmcXfraziH7bVx2/u/823hTRnScYrswPX1s3ZbllM6ba+czDxIA8WP+g==",
+  "dgSpecHash": "TIDQf8LISDD1HKCp/OxS1lwhcrraFeZ+cXta6doS4yg2YIvD8E2zu3SycerpbSrt9o8DVFp9ZCEGUhqWCsvhkw==",
   "success": true,
   "projectFilePath": "G:\\Users_COREGit\\WebAPI\\WebAPI.csproj",
   "expectedPackageFiles": [
@@ -16,6 +16,7 @@
     "C:\\Users\\ProBook 450 HP\\.nuget\\packages\\microsoft.win32.registry\\4.7.0\\microsoft.win32.registry.4.7.0.nupkg.sha512",
     "C:\\Users\\ProBook 450 HP\\.nuget\\packages\\microsoft.win32.systemevents\\4.7.0\\microsoft.win32.systemevents.4.7.0.nupkg.sha512",
     "C:\\Users\\ProBook 450 HP\\.nuget\\packages\\mysql.data\\8.0.25\\mysql.data.8.0.25.nupkg.sha512",
+    "C:\\Users\\ProBook 450 HP\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512",
     "C:\\Users\\ProBook 450 HP\\.nuget\\packages\\runtime.native.system.data.sqlclient.sni\\4.7.0\\runtime.native.system.data.sqlclient.sni.4.7.0.nupkg.sha512",
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\runtime.win-arm64.runtime.native.system.data.sqlclient.sni\\4.4.0\\runtime.win-arm64.runtime.native.system.data.sqlclient.sni.4.4.0.nupkg.sha512",
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\runtime.win-x64.runtime.native.system.data.sqlclient.sni\\4.4.0\\runtime.win-x64.runtime.native.system.data.sqlclient.sni.4.4.0.nupkg.sha512",

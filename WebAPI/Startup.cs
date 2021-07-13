@@ -46,7 +46,6 @@ namespace WebAPI
             //Se agregan estas líneas:
             services.AddTransient((ServiceProvider) => BridgeDBConnection<UserModel>.Create(Configuration.GetConnectionString("LocalServer"), CORE.Connection.Models.DbEnum.Sql));
             services.AddTransient((ServiceProvider) => BridgeDBConnection<LoginModel>.Create(Configuration.GetConnectionString("LocalServer"), CORE.Connection.Models.DbEnum.Sql));
-            //services.AddTransient((ServiceProvider) => FactorizadorBD<SIFOAModel>.Crear(Configuration.GetConnectionString("SIFOA"), DbEnum.Sql));
 
             services.AddScoped<IUser, UserService>();
             services.AddScoped<ILogin, LoginService>();
