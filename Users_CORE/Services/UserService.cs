@@ -1,4 +1,5 @@
 ﻿using CORE.Connection.Interfaces;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -96,17 +97,76 @@ namespace Users_CORE.Services
                 _parameters.Clear();
             }
         }
-        public void AddUser(Models.UserModel model)
+        public long AddUser(Models.UserModel model)
         {
-            throw new Exception();
+            try
+            {
+                long id = 0;
+                _parameters.Add(new Tuple<string, object, int>("@p_user_json", JsonConvert.SerializeObject(model), 12));
+                _conn.PrepararProcedimiento("dbo.[USERS.Set]", _parameters);
+                DataTableReader DTRR = _conn.EjecutarTableReader();
+                while (DTRR.Read())
+                {
+                    if (!string.IsNullOrEmpty(DTRR[0].ToString()))
+                    {
+                        id = long.Parse(DTRR[0].ToString());
+                    }
+                }
+
+                return id;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message, ex);
+            }
+            finally
+            {
+                _parameters.Clear();
+            }
         } 
-        public void UpdateUser(Models.UserModel model)
+        public bool UpdateUser(Models.UserModel model)
         {
-            throw new Exception();
+            try
+            {
+                bool reply = false;
+                _parameters.Add(new Tuple<string, object, int>("@p_user_json", JsonConvert.SerializeObject(model), 12));
+                _conn.PrepararProcedimiento("dbo.[USERS.Update]", _parameters);
+                DataTableReader DTRR = _conn.EjecutarTableReader();
+                while (DTRR.Read())
+                {
+                    if (!string.IsNullOrEmpty(DTRR[0].ToString()))
+                    {
+                        reply = long.Parse(DTRR[0].ToString()) > 0 ? true : false;
+                    }
+                }
+
+                return reply;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message, ex);
+            }
+            finally
+            {
+                _parameters.Clear();
+            }
         } 
         public void DeleteUser(int ID)
         {
-            throw new Exception();
+            try
+            {
+                _parameters.Add(new Tuple<string, object, int>("@Id", ID, 0));
+                _conn.PrepararProcedimiento("dbo.[USERS.Delete]", _parameters);
+                int reply = _conn.EjecutarProcedimiento();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message, ex);
+            }
+            finally
+            {
+                _parameters.Clear();
+            }
         } 
 
         #region Dispose

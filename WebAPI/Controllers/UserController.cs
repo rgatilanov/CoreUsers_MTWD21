@@ -51,5 +51,55 @@ namespace WebAPI.Controllers
 
             return model;
         }
+
+        //https://localhost:5001/api/User/AddUser
+        [HttpPost]
+        [Route("[action]")]
+        public ActionResult AddUser(Users_CORE.Models.UserModel user)
+        {
+            if (user == null)
+                return BadRequest("Ingrese información de usuario");
+
+            long model = 0;
+            using (IUser User = Users_CORE.Services.FactorizerService.Inicializar(Users_CORE.Models.EServer.LOCAL))
+            {
+                model = User.AddUser(user);
+            }
+
+            return model > 0 ? Ok() : BadRequest("Error al insertar");
+        }
+
+        //https://localhost:5001/api/User/UpdateUser
+        [HttpPost]
+        [Route("[action]")]
+        public ActionResult UpdateUser(Users_CORE.Models.UserModel user)
+        {
+            if (user.Identificador == 0)
+                return BadRequest("Ingrese un ID válido");
+
+            bool model = false;
+            using (IUser User = Users_CORE.Services.FactorizerService.Inicializar(Users_CORE.Models.EServer.LOCAL))
+            {
+                model = User.UpdateUser(user);
+            }
+
+            return model == true ? Ok() : BadRequest("Error al actualizar");
+        }
+
+        //https://localhost:5001/api/user/deleteuser?ID=2
+        [HttpDelete]
+        [Route("[action]")]
+        public ActionResult DeleteUser(int ID)
+        {
+            if (ID == 0)
+                return BadRequest("Ingrese un ID válido");
+
+            using (IUser User = Users_CORE.Services.FactorizerService.Inicializar(Users_CORE.Models.EServer.LOCAL))
+            {
+                User.DeleteUser(ID);
+            }
+
+            return Ok();
+        }
     }
 }

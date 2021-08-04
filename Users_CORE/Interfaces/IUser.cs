@@ -8,8 +8,8 @@ namespace Users_CORE.Interfaces
     {
         List<Models.UserModel> GetUsers();
         Models.UserModel GetUser(int ID);
-        void AddUser(Models.UserModel model);
-        void UpdateUser(Models.UserModel model);
+        long AddUser(Models.UserModel model);
+        bool UpdateUser(Models.UserModel model);
         void DeleteUser(int ID);
     }
 }
