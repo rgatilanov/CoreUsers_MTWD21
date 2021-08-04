@@ -6,6 +6,6 @@ namespace Users_CORE.Interfaces
 {
     public interface ILogin : IDisposable
     {
-        Models.UserModel Login(Models.LoginMinModel user);
+        Models.LoginModel Login(Models.LoginMinModel user);
     }
 }

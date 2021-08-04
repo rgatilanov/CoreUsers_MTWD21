@@ -1,6 +1,9 @@
 ﻿using CORE.Connection.Interfaces;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Text;
 using Users_CORE.Interfaces;
 using Users_CORE.Models;
@@ -11,15 +14,51 @@ namespace Users_CORE.Services
     {
         private bool disposedValue;
         private IConnectionDB<LoginModel> _conn;
-
+        private List<Tuple<string, object, int>> _parameters = new List<Tuple<string, object, int>>();
         public LoginService(IConnectionDB<LoginModel> conn)
         {
             _conn = conn;
         }
 
-        public Models.UserModel Login(Models.LoginMinModel user)
+        public Models.LoginModel Login(Models.LoginMinModel user)
         {
-            throw new Exception();
+            try
+            {
+                LoginModel model = new LoginModel();
+                _parameters.Add(new Tuple<string, object, int>("@p_login_json", JsonConvert.SerializeObject(user), 12));
+                _conn.PrepararProcedimiento("dbo.[USERS.Login]", _parameters);
+
+                DataTableReader DTRResultados = _conn.EjecutarTableReader();
+                while (DTRResultados.Read())
+                {
+                    var Json = DTRResultados["Usuario"].ToString();
+                    if (Json != string.Empty)
+                    {
+                        JArray arr = JArray.Parse(Json);
+                        foreach (JObject jsonOperaciones in arr.Children<JObject>())
+                        {
+                            //user = JsonConvert.DeserializeObject<User>(jsonOperaciones);
+                            model = new LoginModel()
+                            {
+                                Id = Convert.ToInt32(jsonOperaciones["Id"].ToString()),
+                                Name = jsonOperaciones["Name"].ToString(),
+                                LastName = jsonOperaciones["LastName"].ToString(),
+                            };
+
+                        }
+                    }
+                }
+
+                return model;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            finally
+            {
+                _parameters.Clear();
+            }
         }
 
         #region Dispose
