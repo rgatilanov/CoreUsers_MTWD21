@@ -9,15 +9,27 @@ namespace WebAPI.Helpers
 {
     internal static class TokenGenerator
     {
-        public static string GenerateTokenJwt(string username, long id, IConfiguration _configuration)
+        public static string GenerateTokenJwt(
+            string username, 
+            long id,
+            string _secretKey,
+            string _audienceToken,
+            string _issuerToken,
+            string _expireTime
+            )
         {
+            var secretKey = _secretKey;
+            var audienceToken = _audienceToken;
+            var issuerToken = _issuerToken; 
+            var expireTime = _expireTime;
+
             // appsetting for Token JWT
-            var secretKey = _configuration["JWT:SECRET_KEY"];
+            /*var secretKey = _configuration["JWT:SECRET_KEY"];
             var audienceToken = _configuration["JWT:AUDIENCE_TOKEN"];
             var issuerToken = _configuration["JWT:ISSUER_TOKEN"]; //editor
-            var expireTime = _configuration["JWT:EXPIRE_MINUTES"];
+            var expireTime = _configuration["JWT:EXPIRE_MINUTES"];*/
 
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:SECRET_KEY"]));
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
             var signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature);
 
             // create a claimsIdentity

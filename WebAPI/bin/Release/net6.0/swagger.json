@@ -10,6 +10,11 @@
         "tags": [
           "Login"
         ],
+        "consumes": [
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
         "produces": [
           "text/plain",
           "application/json",
@@ -17,14 +22,11 @@
         ],
         "parameters": [
           {
-            "in": "query",
-            "name": "Nick",
-            "type": "string"
-          },
-          {
-            "in": "query",
-            "name": "Pass",
-            "type": "string"
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/LoginMinModel"
+            }
           }
         ],
         "responses": {
