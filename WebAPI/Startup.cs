@@ -40,7 +40,26 @@ namespace WebAPI
             //           .AllowAnyHeader();
             //}));
 
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Production")
+            {
+                services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+             .AddJwtBearer(options =>
+             {
+                 options.TokenValidationParameters = new TokenValidationParameters
+                 {
+                     ValidateIssuer = true,
+                     ValidateAudience = true,
+                     ValidateLifetime = true,
+                     ValidateIssuerSigningKey = true,
+                     ValidIssuer = Environment.GetEnvironmentVariable("ISSUER_TOKEN"),
+                     ValidAudience = Environment.GetEnvironmentVariable("AUDIENCE_TOKEN"),
+                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("SECRET_KEY")))
+                 };
+             });
+            }
+            else
+            {
+                services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
               .AddJwtBearer(options =>
               {
                   options.TokenValidationParameters = new TokenValidationParameters
@@ -54,6 +73,7 @@ namespace WebAPI
                       IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JWT:SECRET_KEY"]))
                   };
               });
+            }
 
             services.AddControllers();
             services.AddSwaggerGen(c =>

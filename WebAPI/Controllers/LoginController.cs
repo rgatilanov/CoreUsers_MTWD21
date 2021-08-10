@@ -26,8 +26,8 @@ namespace WebAPI.Controllers
             {
                 ConnectionStringAzure = _configuration.GetConnectionString("CloudServer");
                 _secretKey = Environment.GetEnvironmentVariable("SECRET_KEY");
-                _audienceToken = Environment.GetEnvironmentVariable("ISSUER_TOKEN");
-                _issuerToken = Environment.GetEnvironmentVariable("AUDIENCE_TOKEN");
+                _audienceToken = Environment.GetEnvironmentVariable("AUDIENCE_TOKEN");
+                _issuerToken = Environment.GetEnvironmentVariable("ISSUER_TOKEN");
                 _expireTime = Environment.GetEnvironmentVariable("EXPIRE_MINUTES");
             }
             else
@@ -55,6 +55,7 @@ namespace WebAPI.Controllers
             {
                 model = User.Login(login);
             }
+            
             model.Token = TokenGenerator.GenerateTokenJwt(model.Name, model.Id,_secretKey,_audienceToken,_issuerToken,_expireTime);
             return Ok(model); 
         }
