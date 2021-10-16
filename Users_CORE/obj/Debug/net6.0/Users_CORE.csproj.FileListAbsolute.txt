@@ -9,3 +9,4 @@ G:\Users_COREGit\Users_CORE\obj\Debug\net6.0\Users_CORE.csproj.CoreCompileInputs
 G:\Users_COREGit\Users_CORE\obj\Debug\net6.0\Users_CORE.dll
 G:\Users_COREGit\Users_CORE\obj\Debug\net6.0\ref\Users_CORE.dll
 G:\Users_COREGit\Users_CORE\obj\Debug\net6.0\Users_CORE.pdb
+G:\Users_COREGit\Users_CORE\obj\Debug\net6.0\Users_CORE.csproj.AssemblyReference.cache

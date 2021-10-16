@@ -4,9 +4,12 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlClient;
 using System.Text;
 using Users_CORE.Interfaces;
 using Users_CORE.Models;
+using Users_CORE.Tools;
+using Dapper;
 
 namespace Users_CORE.Services
 {
@@ -15,30 +18,32 @@ namespace Users_CORE.Services
         private bool disposedValue;
         private IConnectionDB<UserModel> _conn;
         private List<Tuple<string, object, int>> _parameters = new List<Tuple<string, object, int>>();
-
+        string _connectionString = string.Empty;
         public UserService(IConnectionDB<UserModel> conn)
         {
             _conn = conn;
         }
 
+        public UserService(IConnectionDB<UserModel> conn, string connectionString)
+        {
+            _conn = conn;
+            _connectionString = EncryptTool.Decrypt(connectionString);
+        }
         public List<Models.UserModel> GetUsers()
         {
+            List<UserModel> list = new List<UserModel>();
+
             try
             {
-                List<UserModel> list = new List<UserModel>();
-
-                _conn.PrepararProcedimiento("dbo.[USERS.Get_All]", _parameters);
-
-                DataTableReader DTRResultados = _conn.EjecutarTableReader();
-                while (DTRResultados.Read())
+                using (var connection = new SqlConnection(this._connectionString))
                 {
-                    var Json = DTRResultados["Usuario"].ToString();
+                    var Json = connection.QueryFirstOrDefault<string>("dbo.[USERS.Get_All]", null, commandType: CommandType.StoredProcedure);
+
                     if (Json != string.Empty)
                     {
                         JArray arr = JArray.Parse(Json);
                         foreach (JObject jsonOperaciones in arr.Children<JObject>())
                         {
-                            //user = JsonConvert.DeserializeObject<User>(jsonOperaciones);
                             list.Add(new UserModel()
                             {
                                 Identificador = Convert.ToInt32(jsonOperaciones["Id"].ToString()),
@@ -50,9 +55,18 @@ namespace Users_CORE.Services
 
                         }
                     }
-                }
 
+
+                }
                 return list;
+            }
+            catch (SqlException sqlEx)
+            {
+                throw new Exception(sqlEx.Message);
+            }
+            catch (MySql.Data.MySqlClient.MySqlException mysqlEx)
+            {
+                throw new Exception(mysqlEx.Message);
             }
             catch (Exception ex)
             {
@@ -65,28 +79,22 @@ namespace Users_CORE.Services
         }
         public Models.UserModel GetUser(int ID)
         {
+            Models.UserModel UsuarioResp = null;
             try
             {
-                UserModel UsuarioResp = null;
-
-                _parameters.Add(new Tuple<string, object, int>("@Id", ID, 0));
-                _conn.PrepararProcedimiento("dbo.[USERS.Get_Id]", _parameters);
-
-                DataTableReader DTRResultados = _conn.EjecutarTableReader();
-                while (DTRResultados.Read())
+                using (var connection = new SqlConnection(this._connectionString))
                 {
-                    UsuarioResp = new UserModel()
-                    {
-                        Identificador = ID,
-                        Name = DTRResultados["Name"].ToString(),
-                        LastName = DTRResultados["LastName"].ToString(),
-                        Nick = DTRResultados["Nick"].ToString(),
-                        CreateDate = DateTime.Parse(DTRResultados["CreateDate"].ToString()),
-
-                    };
+                    UsuarioResp = (Models.UserModel)connection.QueryFirst<UserModel>("dbo.[USERS.Get_Id]", new { Id = ID }, commandType: CommandType.StoredProcedure);
                 }
-
                 return UsuarioResp;
+            }
+            catch (SqlException sqlEx)
+            {
+                throw new Exception(sqlEx.Message);
+            }
+            catch (MySql.Data.MySqlClient.MySqlException mysqlEx)
+            {
+                throw new Exception(mysqlEx.Message);
             }
             catch (Exception ex)
             {
@@ -99,18 +107,13 @@ namespace Users_CORE.Services
         }
         public long AddUser(Models.UserModel model)
         {
+            long id = 0;
+
             try
             {
-                long id = 0;
-                _parameters.Add(new Tuple<string, object, int>("@p_user_json", JsonConvert.SerializeObject(model), 12));
-                _conn.PrepararProcedimiento("dbo.[USERS.Set]", _parameters);
-                DataTableReader DTRR = _conn.EjecutarTableReader();
-                while (DTRR.Read())
+                using (var connection = new SqlConnection(this._connectionString))
                 {
-                    if (!string.IsNullOrEmpty(DTRR[0].ToString()))
-                    {
-                        id = long.Parse(DTRR[0].ToString());
-                    }
+                    id = connection.QueryFirstOrDefault<long>("dbo.[USERS.Set]", new { p_user_json = JsonConvert.SerializeObject(model) }, commandType: CommandType.StoredProcedure);
                 }
 
                 return id;
@@ -123,21 +126,17 @@ namespace Users_CORE.Services
             {
                 _parameters.Clear();
             }
-        } 
+        }
         public bool UpdateUser(Models.UserModel model)
         {
             try
             {
                 bool reply = false;
-                _parameters.Add(new Tuple<string, object, int>("@p_user_json", JsonConvert.SerializeObject(model), 12));
-                _conn.PrepararProcedimiento("dbo.[USERS.Update]", _parameters);
-                DataTableReader DTRR = _conn.EjecutarTableReader();
-                while (DTRR.Read())
+                using (var connection = new SqlConnection(this._connectionString))
                 {
-                    if (!string.IsNullOrEmpty(DTRR[0].ToString()))
-                    {
-                        reply = long.Parse(DTRR[0].ToString()) > 0 ? true : false;
-                    }
+                    var affectedRows = connection.QueryFirstOrDefault<long>("dbo.[USERS.Update]", new { p_user_json = JsonConvert.SerializeObject(model) }, commandType: CommandType.StoredProcedure);
+
+                    reply = affectedRows < 1 ? false : true;
                 }
 
                 return reply;
@@ -150,14 +149,15 @@ namespace Users_CORE.Services
             {
                 _parameters.Clear();
             }
-        } 
+        }
         public void DeleteUser(int ID)
         {
             try
             {
-                _parameters.Add(new Tuple<string, object, int>("@Id", ID, 0));
-                _conn.PrepararProcedimiento("dbo.[USERS.Delete]", _parameters);
-                int reply = _conn.EjecutarProcedimiento();
+                using (var connection = new SqlConnection(this._connectionString))
+                {
+                    var affectedRows = connection.Execute("dbo.[USERS.Delete]", new { Id = ID }, commandType: CommandType.StoredProcedure);
+                }
             }
             catch (Exception ex)
             {
@@ -167,7 +167,7 @@ namespace Users_CORE.Services
             {
                 _parameters.Clear();
             }
-        } 
+        }
 
         #region Dispose
 

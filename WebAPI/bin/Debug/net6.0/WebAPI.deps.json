@@ -38,6 +38,14 @@
           }
         }
       },
+      "Dapper/2.0.90": {
+        "runtime": {
+          "lib/net5.0/Dapper.dll": {
+            "assemblyVersion": "2.0.0.0",
+            "fileVersion": "2.0.90.36046"
+          }
+        }
+      },
       "Google.Protobuf/3.14.0": {
         "dependencies": {
           "System.Memory": "4.5.3",
@@ -436,6 +444,7 @@
       "Users_CORE/1.0.0": {
         "dependencies": {
           "CORE.Connection": "1.0.1",
+          "Dapper": "2.0.90",
           "Newtonsoft.Json": "13.0.1"
         },
         "runtime": {
@@ -463,6 +472,13 @@
       "sha512": "sha512-Hset7jrdcGm96Egui7e/rlP8WlwxYFOhe02YUp2gF/A12fsJvrklb3wV8l6lI3AL9zpDslBavNPd3iG7Bq1tpA==",
       "path": "core.connection/1.0.1",
       "hashPath": "core.connection.1.0.1.nupkg.sha512"
+    },
+    "Dapper/2.0.90": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-e4YjOLJptnpwHIbP8HxjaYf7So9lhUC43rvvGMEkH4Q4CiVlm4rOxYDo0HyuHlMQKj0U5Ob/nCMm52TUhTaZQg==",
+      "path": "dapper/2.0.90",
+      "hashPath": "dapper.2.0.90.nupkg.sha512"
     },
     "Google.Protobuf/3.14.0": {
       "type": "package",
