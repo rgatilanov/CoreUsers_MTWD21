@@ -77,6 +77,32 @@ namespace Users_CORE.Services
                 _parameters.Clear();
             }
         }
+        public List<Models.UserModel> GetUsers(string SQLstatement, CommandType commandType)
+        {
+            List<Models.UserModel> UsuarioResp = null;
+            try
+            {
+                using (
+                    
+                    var connection = new Npgsql.NpgsqlConnection(this._connectionString))
+                {
+                    UsuarioResp = (List<Models.UserModel>)connection.Query<UserModel>(SQLstatement, null, commandType: commandType);
+                }
+                return UsuarioResp;
+            }
+            catch (Npgsql.NpgsqlException sqlEx)
+            {
+                throw new Exception(sqlEx.Message);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            finally
+            {
+                _parameters.Clear();
+            }
+        }
         public Models.UserModel GetUser(int ID)
         {
             Models.UserModel UsuarioResp = null;

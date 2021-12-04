@@ -10,6 +10,7 @@ namespace Users_CORE.Models
     {
         UDEFINED = 0,
         CLOUD = 1,
-        LOCAL = 2,
+        LOCAL_SQLSERVER = 2,
+        LOCAL_POSTGRESQL = 3
     }
 }

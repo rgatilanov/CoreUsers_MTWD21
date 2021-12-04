@@ -26,9 +26,10 @@ namespace Users_CORE.Services
             {
                 LoginModel model = new LoginModel();
                 _parameters.Add(new Tuple<string, object, int>("@p_login_json", JsonConvert.SerializeObject(user), 12));
-                _conn.PrepararProcedimiento("dbo.[USERS.Login]", _parameters);
+                //_conn.PrepararProcedimiento("dbo.[USERS.Login]", _parameters);
 
-                DataTableReader DTRResultados = _conn.EjecutarTableReader();
+                //DataTableReader DTRResultados = _conn.EjecutarTableReader();
+                DataTableReader DTRResultados = null;
                 while (DTRResultados.Read())
                 {
                     var Json = DTRResultados["Usuario"].ToString();

@@ -11,7 +11,7 @@ using Users_CORE.Interfaces;
 
 namespace WebAPI.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class UserController : ControllerBase
@@ -32,10 +32,30 @@ namespace WebAPI.Controllers
         {
 
             List<Users_CORE.Models.UserModel> model = new List<Users_CORE.Models.UserModel>();
-            using (IUser User = Users_CORE.Services.FactorizerService.Inicializar(ConnectionStringAzure == string.Empty ? Users_CORE.Models.EServer.LOCAL : Users_CORE.Models.EServer.CLOUD))
+#if false
+            #region Conexión a SQL Server
+            using (IUser User = Users_CORE.Services.FactorizerService.Inicializar(ConnectionStringAzure == string.Empty ? Users_CORE.Models.EServer.LOCAL_SQLSERVER : Users_CORE.Models.EServer.CLOUD))
+            #endregion
+#endif
+
+            #region Conexión a PostgreSQL
+            using (IUser User = Users_CORE.Services.FactorizerService.Inicializar(Users_CORE.Models.EServer.LOCAL_POSTGRESQL))
+            #endregion
+
             //using (IUser User = Users_CORE.Services.FactorizerService.Inicializar(ConnectionStringAzure == string.Empty ? Users_CORE.Models.EServer.CLOUD : Users_CORE.Models.EServer.CLOUD))
             {
-                model = User.GetUsers();
+                //model = User.GetUsers();
+                #region Usando query 
+#if true
+                model = User.GetUsers("SELECT user_id AS Identificador,user_name AS Name, user_lastname AS LastName,user_createdate AS CreateDate,user_nick AS Nick, user_password AS Password FROM public.users", System.Data.CommandType.Text);
+#endif
+                #endregion
+                #region Usando function 
+#if false
+                model = User.GetUsers("SELECT user_id AS Identificador,user_name AS Name, user_lastname AS LastName,user_createdate AS CreateDate,user_nick AS Nick, user_password AS Password FROM public.users_get_all();", System.Data.CommandType.Text);
+#endif
+                #endregion
+
             }
 
             return model;
@@ -51,7 +71,7 @@ namespace WebAPI.Controllers
                 return BadRequest("Ingrese ID de usuario válido");
 
             Users_CORE.Models.UserModel model = new Users_CORE.Models.UserModel();
-            using (IUser User = Users_CORE.Services.FactorizerService.Inicializar(ConnectionStringAzure == string.Empty ? Users_CORE.Models.EServer.LOCAL : Users_CORE.Models.EServer.CLOUD))
+            using (IUser User = Users_CORE.Services.FactorizerService.Inicializar(ConnectionStringAzure == string.Empty ? Users_CORE.Models.EServer.LOCAL_SQLSERVER : Users_CORE.Models.EServer.CLOUD))
             //using (IUser User = Users_CORE.Services.FactorizerService.Inicializar(ConnectionStringAzure == string.Empty ? Users_CORE.Models.EServer.CLOUD : Users_CORE.Models.EServer.CLOUD))
             {
                 model = User.GetUser(ID);
@@ -69,7 +89,7 @@ namespace WebAPI.Controllers
                 return BadRequest("Ingrese información de usuario");
 
             long model = 0;
-            using (IUser User = Users_CORE.Services.FactorizerService.Inicializar(ConnectionStringAzure == string.Empty ? Users_CORE.Models.EServer.LOCAL : Users_CORE.Models.EServer.CLOUD))
+            using (IUser User = Users_CORE.Services.FactorizerService.Inicializar(ConnectionStringAzure == string.Empty ? Users_CORE.Models.EServer.LOCAL_SQLSERVER : Users_CORE.Models.EServer.CLOUD))
             //using (IUser User = Users_CORE.Services.FactorizerService.Inicializar(ConnectionStringAzure == string.Empty ? Users_CORE.Models.EServer.CLOUD : Users_CORE.Models.EServer.CLOUD))
             {
                 model = User.AddUser(user);
@@ -87,7 +107,7 @@ namespace WebAPI.Controllers
                 return BadRequest("Ingrese un ID válido");
 
             bool model = false;
-            using (IUser User = Users_CORE.Services.FactorizerService.Inicializar(ConnectionStringAzure == string.Empty ? Users_CORE.Models.EServer.LOCAL : Users_CORE.Models.EServer.CLOUD))
+            using (IUser User = Users_CORE.Services.FactorizerService.Inicializar(ConnectionStringAzure == string.Empty ? Users_CORE.Models.EServer.LOCAL_SQLSERVER : Users_CORE.Models.EServer.CLOUD))
             //using (IUser User = Users_CORE.Services.FactorizerService.Inicializar(ConnectionStringAzure == string.Empty ? Users_CORE.Models.EServer.CLOUD : Users_CORE.Models.EServer.CLOUD))
             {
                 model = User.UpdateUser(user);
@@ -104,7 +124,7 @@ namespace WebAPI.Controllers
             if (ID == 0)
                 return BadRequest("Ingrese un ID válido");
 
-            using (IUser User = Users_CORE.Services.FactorizerService.Inicializar(ConnectionStringAzure == string.Empty ? Users_CORE.Models.EServer.LOCAL : Users_CORE.Models.EServer.CLOUD))
+            using (IUser User = Users_CORE.Services.FactorizerService.Inicializar(ConnectionStringAzure == string.Empty ? Users_CORE.Models.EServer.LOCAL_SQLSERVER : Users_CORE.Models.EServer.CLOUD))
             //using (IUser User = Users_CORE.Services.FactorizerService.Inicializar(ConnectionStringAzure == string.Empty ? Users_CORE.Models.EServer.CLOUD : Users_CORE.Models.EServer.CLOUD))
             {
                 User.DeleteUser(ID);

@@ -16,8 +16,9 @@ namespace Users_CORE.Services
             return typeServer switch
             {
                 EServer.UDEFINED => throw new NullReferenceException(),
-                EServer.LOCAL => new UserService(BridgeDBConnection<UserModel>.Create(ConnectionStrings.LocalServer, CORE.Connection.Models.DbEnum.Sql)),
+                EServer.LOCAL_SQLSERVER => new UserService(BridgeDBConnection<UserModel>.Create(ConnectionStrings.LocalServer_SQL, CORE.Connection.Models.DbEnum.Sql)),
                 EServer.CLOUD => new UserService(BridgeDBConnection<UserModel>.Create(ConnectionStrings.CloudServer, CORE.Connection.Models.DbEnum.Sql)),
+                EServer.LOCAL_POSTGRESQL => new UserService(BridgeDBConnection<UserModel>.Create(ConnectionStrings.LocalServer_PostgreSQL, CORE.Connection.Models.DbEnum.PostgreSQL),ConnectionStrings.LocalServer_PostgreSQL),
                 _ => throw new NullReferenceException(),
             };
 
@@ -28,7 +29,7 @@ namespace Users_CORE.Services
             return typeServer switch
             {
                 EServer.UDEFINED => throw new NullReferenceException(),
-                EServer.LOCAL => new LoginService(BridgeDBConnection<LoginModel>.Create(ConnectionStrings.LocalServer, CORE.Connection.Models.DbEnum.Sql)),
+                EServer.LOCAL_SQLSERVER => new LoginService(BridgeDBConnection<LoginModel>.Create(ConnectionStrings.LocalServer_SQL, CORE.Connection.Models.DbEnum.Sql)),
                 EServer.CLOUD => new LoginService(BridgeDBConnection<LoginModel>.Create(ConnectionStrings.CloudServer, CORE.Connection.Models.DbEnum.Sql)),
                 _ => throw new NullReferenceException(),
             };

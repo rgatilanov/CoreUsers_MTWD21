@@ -50,7 +50,7 @@ namespace WebAPI.Controllers
                 throw new NullReferenceException("Password vacío, el campo es necesario");
 
             LoginModel model = new LoginModel();
-            using (ILogin User = Users_CORE.Services.FactorizerService.Login(ConnectionStringAzure == string.Empty ? Users_CORE.Models.EServer.LOCAL : Users_CORE.Models.EServer.CLOUD))
+            using (ILogin User = Users_CORE.Services.FactorizerService.Login(ConnectionStringAzure == string.Empty ? Users_CORE.Models.EServer.LOCAL_SQLSERVER : Users_CORE.Models.EServer.CLOUD))
             //using (ILogin User = Users_CORE.Services.FactorizerService.Login(Users_CORE.Models.EServer.LOCAL))
             {
                 model = User.Login(login);
